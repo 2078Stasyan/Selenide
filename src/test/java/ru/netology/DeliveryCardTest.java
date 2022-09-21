@@ -110,7 +110,7 @@ public class DeliveryCardTest {
         $("[data-test-id=agreement] span").click();
         $(By.className("button__text")).click();
         String expectedText = "Поле обязательно для заполнения";
-        String actualText = $("[data-test-id=city] .input__sub").getText().trim();
+        String actualText = $("[data-test-id=name] .input__sub").getText().trim();
         assertEquals(expectedText, actualText);
     }
 
