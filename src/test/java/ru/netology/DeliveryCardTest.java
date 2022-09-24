@@ -11,6 +11,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,7 +46,7 @@ public class DeliveryCardTest {
     }
 
     @Test
-    void sendForm2() {
+    void sendForm2Data() {
         Configuration.holdBrowserOpen = true;
         $("[data-test-id=city] input").setValue("Казань");
         $("[data-test-id=date] input").doubleClick().sendKeys(Keys.DELETE);
@@ -98,9 +99,8 @@ public class DeliveryCardTest {
         $("[data-test-id=phone] input").setValue("+79085685525");
         $("[data-test-id=agreement] span").click();
         $(By.className("button__text")).click();
-        String expectedText = "Доставка в выбранный город недоступна";
-        String actualText = $("[data-test-id=city] .input__sub").getText().trim();
-        assertEquals(expectedText, actualText);
+        $("[data-test-id=city] .input__sub")
+                .shouldHave(exactText("Доставка в выбранный город недоступна"), Duration.ofSeconds(15));
     }
 
     @Test
@@ -113,9 +113,8 @@ public class DeliveryCardTest {
         $("[data-test-id=phone] input").setValue("+79085685525");
         $("[data-test-id=agreement] span").click();
         $(By.className("button__text")).click();
-        String expectedText = "Поле обязательно для заполнения";
-        String actualText = $("[data-test-id=city] .input__sub").getText().trim();
-        assertEquals(expectedText, actualText);
+        $("[data-test-id=city] .input__sub")
+                .shouldHave(exactText("Поле обязательно для заполнения"), Duration.ofSeconds(15));
     }
 
     @Test
@@ -128,9 +127,8 @@ public class DeliveryCardTest {
         $("[data-test-id=phone] input").setValue("+79085685525");
         $("[data-test-id=agreement] span").click();
         $(By.className("button__text")).click();
-        String expectedText = "Поле обязательно для заполнения";
-        String actualText = $("[data-test-id=name] .input__sub").getText().trim();
-        assertEquals(expectedText, actualText);
+        $("[data-test-id=name] .input__sub")
+                .shouldHave(exactText("Поле обязательно для заполнения"), Duration.ofSeconds(15));
     }
 
     @Test
@@ -143,9 +141,8 @@ public class DeliveryCardTest {
         $("[data-test-id=phone] input").setValue("+79085685525");
         $("[data-test-id=agreement] span").click();
         $(By.className("button__text")).click();
-        String expectedText = "Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.";
-        String actualText = $("[data-test-id=name] .input__sub").getText().trim();
-        assertEquals(expectedText, actualText);
+        $("[data-test-id=name] .input__sub")
+                .shouldHave(exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."), Duration.ofSeconds(15));
     }
 
     @Test
@@ -158,9 +155,8 @@ public class DeliveryCardTest {
         $("[data-test-id=phone] input").setValue("+79085685");
         $("[data-test-id=agreement] span").click();
         $(By.className("button__text")).click();
-        String expectedText = "Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.";
-        String actualText = $("[data-test-id=phone] .input__sub").getText().trim();
-        assertEquals(expectedText, actualText);
+        $("[data-test-id=phone] .input__sub")
+                .shouldHave(exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."), Duration.ofSeconds(15));
     }
 
     @Test
@@ -173,9 +169,8 @@ public class DeliveryCardTest {
         //$("[data-test-id=phone] input").setValue("");
         $("[data-test-id=agreement] span").click();
         $(By.className("button__text")).click();
-        String expectedText = "Поле обязательно для заполнения";
-        String actualText = $("[data-test-id=phone] .input__sub").getText().trim();
-        assertEquals(expectedText, actualText);
+        $("[data-test-id=phone] .input__sub")
+                .shouldHave(exactText("Поле обязательно для заполнения"), Duration.ofSeconds(15));
     }
 
     @Test
@@ -188,8 +183,8 @@ public class DeliveryCardTest {
         $("[data-test-id=phone] input").setValue("+79085685525");
         //$("[data-test-id=agreement] span").click();
         $(By.className("button__text")).click();
-        //String checkboxInvalid = $("[data-test-id=agreement].checkbox").getAttribute("className");
-        //assertTrue(checkboxInvalid.contains("input_invalid"));
-        $("[data-test-id=agreement].checkbox").getAttribute("className").
+        $("[data-test-id=agreement].input_invalid .checkbox__text")
+                .shouldHave(Condition.text("Я соглашаюсь с условиями обработки и использования моих персональных данных"), Duration.ofSeconds(15))
+                .shouldBe(Condition.visible);
     }
 }
